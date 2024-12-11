@@ -31,14 +31,14 @@ function stickyEditor(editor) {
             let row = 0;
 
             if(offset > 0)
-            while (row < currentRow + 2 + selectors.length) {
+            while (row < currentRow + 1 + selectors.length) {
                 let tokens = editor.session.getTokens(row);
 
                 tokens.forEach(element => {
                     if (tokenOpen(element))
                         selectors.push([row, tokens]);
 
-                    if (tokenClose(element)) //prevent pop 1 line too early
+                    if ((row < currentRow + selectors.length) && tokenClose(element)) //prevent pop 1 line too early
                         selectors.pop();
                     
                 });
