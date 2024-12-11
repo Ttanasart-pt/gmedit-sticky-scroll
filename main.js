@@ -1,9 +1,11 @@
 function tokenOpen(token) {
-    return token.value == '{' || token.value.startsWith('#region');
+    var val = token.value.trim();
+    return val == '{' || val.startsWith('#region');
 }
 
 function tokenClose(token) {
-    return token.value == '}' || token.value.startsWith('#endregion');
+    var val = token.value.trim();
+    return val == '}' || val.startsWith('#endregion');
 }
 
 function stickyEditor(editor) {
@@ -29,14 +31,14 @@ function stickyEditor(editor) {
             let row = 0;
 
             if(offset > 0)
-            while (row < currentRow + 1 + selectors.length) {
+            while (row < currentRow + 2 + selectors.length) {
                 let tokens = editor.session.getTokens(row);
 
                 tokens.forEach(element => {
                     if (tokenOpen(element))
                         selectors.push([row, tokens]);
 
-                    if (row < currentRow + selectors.length && tokenClose(element)) //prevent pop 1 line too early
+                    if (tokenClose(element)) //prevent pop 1 line too early
                         selectors.pop();
                     
                 });
