@@ -1,0 +1,11 @@
+.ace_sticky-content {
+    position: fixed;
+    height: fit-content;
+    background-color: #242630;
+    pointer-events: unset;
+    box-shadow: 0px 5px 8px #00000020;
+}
+
+.ace_sticky-content .ace_indent-guide {
+    border: none;
+}

@@ -1,0 +1,6 @@
+{
+    "name": "sticky-scroll",
+    "scripts": ["main.js"],
+    "stylesheets": ["sticky-scroll.css"],
+    "dependencies": []
+}
