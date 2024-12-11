@@ -1,3 +1,11 @@
+function tokenOpen(token) {
+    return token.value == '{' || token.value.startsWith('#region');
+}
+
+function tokenClose(token) {
+    return token.value == '}' || token.value.startsWith('#endregion');
+}
+
 function stickyEditor(editor) {
     let container = editor.container;
     let stickyEl  = container.querySelector('.ace_scroller');
@@ -25,10 +33,10 @@ function stickyEditor(editor) {
                 let tokens = editor.session.getTokens(row);
 
                 tokens.forEach(element => {
-                    if (element.value == '{')
+                    if (tokenOpen(element))
                         selectors.push([row, tokens]);
 
-                    if (row < currentRow + selectors.length && element.value == '}') //prevent pop 1 line too early
+                    if (row < currentRow + selectors.length && tokenClose(element)) //prevent pop 1 line too early
                         selectors.pop();
                     
                 });
@@ -48,7 +56,7 @@ function stickyEditor(editor) {
             }).join('');
     
             let gutterWidth = container.querySelector('.ace_gutter').offsetWidth;
-            stickyEl.style.paddingLeft = (gutterWidth + 4) + 'px';
+            stickyEl.style.paddingLeft = (gutterWidth + 2) + 'px';
             stickyEl.style.width = stickyEl.parentElement.offsetWidth + 'px';
         }
     }
