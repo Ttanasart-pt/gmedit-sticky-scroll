@@ -25,9 +25,12 @@ function stickyEditor(editor) {
         if (editor.session.getScrollTop() != this.scrollTop) {
             this.scrollTop = editor.session.getScrollTop();
             
-            let selectors = [];
-            let currentRow = editor.renderer.layerConfig.firstRow;
-            let offset = editor.renderer.layerConfig.offset;
+            let selectors  = [];
+            let conf       = editor.renderer.layerConfig;
+            let currentRow = conf.firstRow;
+            let offset     = conf.offset;
+            let lheight    = conf.lineHeight;
+            let shft       = offset % lheight;
             let row = 0;
 
             if(offset > 0)
@@ -36,26 +39,39 @@ function stickyEditor(editor) {
 
                 tokens.forEach(element => {
                     if (tokenOpen(element))
-                        selectors.push([row, tokens]);
+                        selectors.push([row, tokens, 0]);
 
-                    if ((row < currentRow + selectors.length) && tokenClose(element)) //prevent pop 1 line too early
-                        selectors.pop();
+                    if (tokenClose(element)) { //prevent pop 1 line too early
+                        if(row < currentRow + selectors.length)
+                            selectors.pop();
+                        else {
+                            let top = selectors.pop();
+                            selectors.push([top[0], top[1], -shft]);
+                        }
+                    }
                     
                 });
 
                 row++;
             }
 
-            stickyEl.innerHTML = selectors.map(([row, tokens], length) => {
+            let i = 0;
+            let h = 0;
+            
+            stickyEl.innerHTML = selectors.map(([row, tokens, offset], length) => {
                 let content = "";
 
+                i++;
+                h += lheight + offset;
                 content += tokens.map((token) => token.type == "text" ? token.value.replace(/\t/g, '') : `<span class="${
                                  token.type.split(".").map((type) => `ace_${type}`).join(" ")
                                  }">${token.value}</span>`)
                                  .join('')
 
-                return `<div class="ace_line">${content}</div>`;
+                return `<div class="ace_line" style="transform: translateY(${offset}px); clip-path: inset(${-offset}px 0px -10px 0px);">${content}</div>`;
             }).join('');
+
+            stickyEl.style.height = h + 'px';
     
             let gutterWidth = container.querySelector('.ace_gutter').offsetWidth;
             stickyEl.style.paddingLeft = (gutterWidth + 2) + 'px';
