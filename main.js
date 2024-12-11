@@ -55,8 +55,14 @@ function stickyEditor(editor) {
                 row++;
             }
 
+            if(selectors.length == 0) {
+                stickyEl.style.display = 'none';
+                return;
+            }
+
+            stickyEl.style.display = 'block';
             let i = 0;
-            let h = 0;
+            let h = 2;
             
             stickyEl.innerHTML = selectors.map(([row, tokens, offset], length) => {
                 i++;
@@ -64,8 +70,8 @@ function stickyEditor(editor) {
 
                 let content = `<div class="ace_line" style="transform: translateY(${offset}px); clip-path: inset(${-offset}px 0px -10px 0px);">`;
 
-                content += new Array(length).fill(null).map(() => '<span class="">    </span>').join('');
-                content += tokens.map((token) => token.type == "text" ? token.value.replace(/\t/g, '') : `<span class="${
+                //content += new Array(length).fill(null).map(() => '<span class="">    </span>').join('');
+                content += tokens.map((token) => token.type == "text" ? token.value.replace(/\t/g, '    ') : `<span class="${
                                  token.type.split(".").map((type) => `ace_${type}`).join(" ")
                                  }">${token.value}</span>`)
                                  .join('');
@@ -77,7 +83,7 @@ function stickyEditor(editor) {
             stickyEl.style.height = h + 'px';
     
             let gutterWidth = container.querySelector('.ace_gutter').offsetWidth;
-            stickyEl.style.paddingLeft = gutterWidth + 4 + 'px';
+            stickyEl.style.paddingLeft = gutterWidth + 3 + 'px';
             stickyEl.style.width = stickyEl.parentElement.offsetWidth + 'px';
         }
     }
