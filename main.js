@@ -59,22 +59,25 @@ function stickyEditor(editor) {
             let h = 0;
             
             stickyEl.innerHTML = selectors.map(([row, tokens, offset], length) => {
-                let content = "";
-
                 i++;
                 h += lheight + offset;
+
+                let content = `<div class="ace_line" style="transform: translateY(${offset}px); clip-path: inset(${-offset}px 0px -10px 0px);">`;
+
+                content += new Array(length).fill(null).map(() => '<span class="">    </span>').join('');
                 content += tokens.map((token) => token.type == "text" ? token.value.replace(/\t/g, '') : `<span class="${
                                  token.type.split(".").map((type) => `ace_${type}`).join(" ")
                                  }">${token.value}</span>`)
-                                 .join('')
-
-                return `<div class="ace_line" style="transform: translateY(${offset}px); clip-path: inset(${-offset}px 0px -10px 0px);">${content}</div>`;
+                                 .join('');
+                content += '</div>';
+                                 
+                return content;
             }).join('');
 
             stickyEl.style.height = h + 'px';
     
             let gutterWidth = container.querySelector('.ace_gutter').offsetWidth;
-            stickyEl.style.paddingLeft = (gutterWidth + 2) + 'px';
+            stickyEl.style.paddingLeft = gutterWidth + 4 + 'px';
             stickyEl.style.width = stickyEl.parentElement.offsetWidth + 'px';
         }
     }
