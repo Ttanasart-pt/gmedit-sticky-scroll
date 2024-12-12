@@ -1,11 +1,11 @@
 function tokenOpen(token) {
     var val = token.value.trim();
-    return val == '{' || val.startsWith('#region');
+    return val == '{' || val == '#region';
 }
 
 function tokenClose(token) {
     var val = token.value.trim();
-    return val == '}' || val.startsWith('#endregion');
+    return val == '}' || val == '#endregion';
 }
 
 function stickyEditor(editor) {
@@ -41,6 +41,18 @@ function stickyEditor(editor) {
                 let tokens = editor.session.getTokens(row);
 
                 tokens.forEach(element => {
+                    if(element.value == '#event') {
+                        if(row < currentRow + selectors.length) {
+                            if(selectors.length > 0)
+                                selectors.pop();
+                            selectors.push([row, tokens, 0]);
+                        } else {
+                            let top = selectors.pop();
+                            selectors.push([top[0], top[1], -shft]);
+                        }
+                        return;
+                    }
+
                     if (tokenOpen(element)) {
                         let pushTokens = tokens;
                         if (row > 0 && lonelyBrace.test(session.getLine(row))) {
