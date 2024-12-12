@@ -22,6 +22,9 @@ function stickyEditor(editor) {
     stickyEl = stickyEl.previousElementSibling;
     
     function stickyScroll() {
+        const session = editor.session;
+        const lonelyBrace = /^\s*\{\s*$/;
+        
         if (editor.session.getScrollTop() != this.scrollTop) {
             this.scrollTop = editor.session.getScrollTop();
             
@@ -38,11 +41,16 @@ function stickyEditor(editor) {
                 let tokens = editor.session.getTokens(row);
 
                 tokens.forEach(element => {
-                    if (tokenOpen(element))
-                        selectors.push([row, tokens, 0]);
+                    if (tokenOpen(element)) {
+                        let pushTokens = tokens;
+                        if (row > 0 && lonelyBrace.test(session.getLine(row))) {
+                            pushTokens = session.getTokens(row - 1);
+                        }
+                        selectors.push([row, pushTokens, 0]);
+                    }
 
-                    if (tokenClose(element)) { //prevent pop 1 line too early
-                        if(row < currentRow + selectors.length)
+                    if (tokenClose(element)) {
+                        if(row < currentRow + selectors.length) //prevent pop 1 line too early
                             selectors.pop();
                         else {
                             let top = selectors.pop();
@@ -83,7 +91,7 @@ function stickyEditor(editor) {
             stickyEl.style.height = h + 'px';
     
             let gutterWidth = container.querySelector('.ace_gutter').offsetWidth;
-            stickyEl.style.paddingLeft = gutterWidth + 3 + 'px';
+            stickyEl.style.paddingLeft = gutterWidth + 3 + 'px'; //shouldn't be hardcoded I guess, line keep shifting around
             stickyEl.style.width = stickyEl.parentElement.offsetWidth + 'px';
         }
     }
