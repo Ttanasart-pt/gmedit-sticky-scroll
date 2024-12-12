@@ -16,7 +16,7 @@ function stickyEditor(editor) {
         stickyEl.insertAdjacentHTML("beforebegin", "<div class='ace_sticky-content ace_layer'></div>");
     
         container.style.alignSelf = 'flex-end';
-        stickyEl.parentElement.style.contain = 'content';
+        //stickyEl.parentElement.style.contain = 'content';
     }
     
     stickyEl = stickyEl.previousElementSibling;

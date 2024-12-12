@@ -3,7 +3,7 @@
     /* height: fit-content; */
     background-color: #242630;
     pointer-events: unset;
-    box-shadow: 0px 5px 8px #00000020;
+    box-shadow: 0px 3px 6px #00000040;
 }
 
 .ace_sticky-content .ace_indent-guide {
@@ -12,5 +12,5 @@
 
 .ace_sticky-content .ace_line {
     background-color: #242630;
-    /* box-shadow: 0px 5px 8px #00000020; */
+    pointer-events: all;
 }
