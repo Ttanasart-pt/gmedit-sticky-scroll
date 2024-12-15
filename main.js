@@ -27,6 +27,9 @@ function stickyEditor(editor) {
         
         if (editor.session.getScrollTop() != this.scrollTop) {
             this.scrollTop = editor.session.getScrollTop();
+
+            stickyEl.style.display = 'none';
+            if(editor.session.gmlFile && editor.session.gmlFile.kind.modePath != "ace/mode/gml") return;
             
             let selectors  = [];
             let conf       = editor.renderer.layerConfig;

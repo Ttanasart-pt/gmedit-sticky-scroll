@@ -4,6 +4,8 @@
     background-color: #242630;
     pointer-events: unset;
     box-shadow: 0px 3px 6px #00000040;
+
+    clip-path: inset(-10px 0px -10px 20px);
 }
 
 .ace_sticky-content .ace_indent-guide {
@@ -11,6 +13,6 @@
 }
 
 .ace_sticky-content .ace_line {
-    background-color: #242630;
+    /* background-color: #242630; */
     pointer-events: all;
 }
