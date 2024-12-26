@@ -1,3 +1,5 @@
+(function() {
+const KGmlSearchResults = $gmedit["file.kind.gml.KGmlSearchResults"];
 function tokenOpen(token) {
     var val = token.value.trim();
     return val == '{' || val == '#region';
@@ -125,4 +127,5 @@ function init() {
     GMEdit.on("editorCreated", function(e) { stickyEditor(e.editor); });
 }
 
-(function() { GMEdit.register("sticky-scroll", { init: init }); })();
+GMEdit.register("sticky-scroll", { init: init });;
+})();
