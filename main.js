@@ -29,7 +29,13 @@ function stickyEditor(editor) {
             this.scrollTop = editor.session.getScrollTop();
 
             stickyEl.style.display = 'none';
-            if(editor.session.gmlFile && editor.session.gmlFile.kind.modePath != "ace/mode/gml") return;
+            
+            const file = editor.session.gmlFile;
+            if (!file) return;
+            
+            const fileKind = file.kind;
+            if (fileKind instanceof KGmlSearchResults) return;
+            if (fileKind.modePath != "ace/mode/gml") return;
             
             let selectors  = [];
             let conf       = editor.renderer.layerConfig;
