@@ -1,3 +1,5 @@
+(function() {
+const KGmlSearchResults = $gmedit["file.kind.gml.KGmlSearchResults"];
 function tokenOpen(token) {
     var val = token.value.trim();
     return val == '{' || val == '#region';
@@ -29,7 +31,13 @@ function stickyEditor(editor) {
             this.scrollTop = editor.session.getScrollTop();
 
             stickyEl.style.display = 'none';
-            if(editor.session.gmlFile && editor.session.gmlFile.kind.modePath != "ace/mode/gml") return;
+            
+            const file = editor.session.gmlFile;
+            if (!file) return;
+            
+            const fileKind = file.kind;
+            if (fileKind instanceof KGmlSearchResults) return;
+            if (fileKind.modePath != "ace/mode/gml") return;
             
             let selectors  = [];
             let conf       = editor.renderer.layerConfig;
@@ -119,4 +127,5 @@ function init() {
     GMEdit.on("editorCreated", function(e) { stickyEditor(e.editor); });
 }
 
-(function() { GMEdit.register("sticky-scroll", { init: init }); })();
+GMEdit.register("sticky-scroll", { init: init });;
+})();
