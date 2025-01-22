@@ -57,7 +57,8 @@ function stickyEditor(editor) {
                             if(selectors.length > 0)
                                 selectors.pop();
                             selectors.push([row, tokens, 0]);
-                        } else {
+                            
+                        } else if(selectors.length > 0) {
                             let top = selectors.pop();
                             selectors.push([top[0], top[1], -shft]);
                         }
