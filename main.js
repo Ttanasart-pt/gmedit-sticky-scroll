@@ -27,13 +27,19 @@ function stickyEditor(editor) {
         const session = editor.session;
         const lonelyBrace = /^\s*\{\s*$/;
         
-        if (editor.session.getScrollTop() != this.scrollTop) {
+        const file = editor.session.gmlFile;
+        if (!file) return;
+
+        let update = false;
+        update ||= editor.session.getScrollTop() != this.scrollTop;
+        update ||= file != this.file;
+
+        if (update) {
             this.scrollTop = editor.session.getScrollTop();
+            this.file = file; 
 
             stickyEl.style.display = 'none';
             
-            const file = editor.session.gmlFile;
-            if (!file) return;
             
             const fileKind = file.kind;
             if (fileKind instanceof KGmlSearchResults) return;
