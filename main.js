@@ -18,7 +18,6 @@ function stickyEditor(editor) {
         stickyEl.insertAdjacentHTML("beforebegin", "<div class='ace_sticky-content ace_layer'></div>");
     
         container.style.alignSelf = 'flex-end';
-        //stickyEl.parentElement.style.contain = 'content';
     }
     
     stickyEl = stickyEl.previousElementSibling;
@@ -28,7 +27,10 @@ function stickyEditor(editor) {
         const lonelyBrace = /^\s*\{\s*$/;
         
         const file = editor.session.gmlFile;
-        if (!file) return;
+        if (!file) {
+            stickyEl.style.display = 'none';
+            return;
+        }
 
         let update = false;
         update ||= editor.session.getScrollTop() != this.scrollTop;
@@ -39,7 +41,6 @@ function stickyEditor(editor) {
             this.file = file; 
 
             stickyEl.style.display = 'none';
-            
             
             const fileKind = file.kind;
             if (fileKind instanceof KGmlSearchResults) return;
